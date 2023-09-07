@@ -10,6 +10,5 @@ DarkThemePref darkThemePref = DarkThemePref();
     _darkTheme = value;
    darkThemePref.setDarkTheme(value);
    notifyListeners();
-
   }
 }
