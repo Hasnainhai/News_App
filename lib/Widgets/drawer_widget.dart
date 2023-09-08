@@ -37,14 +37,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           const VerticalSpeacing(20.0),
-           listTile(title: 'Home', icon: Icons.home_outlined, onTap: (){},),
+         listTile(title: 'Home', icon: Icons.home_outlined, onTap: (){},),
          listTile(title: 'Bookmarks', onTap: (){}, icon: Icons.receipt_outlined),
         const Divider(thickness: 3.0),
             SwitchListTile(
             activeColor: themeState.getDarkTheme ? Colors.white : Colors.black12 ,
             title: const Text('ChangeTheme',
             style: TextStyle(fontSize: 20.0),
-            
            ),
             secondary:  Icon(themeState.getDarkTheme  ?  Icons.dark_mode_outlined : Icons.light_mode_outlined),
              onChanged: (bool value){
