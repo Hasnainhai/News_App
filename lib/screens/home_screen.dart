@@ -9,32 +9,18 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
       final themeState = Provider.of<DarkThemeProvide>(context);
-     
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar( 
+      
       elevation: 0.0,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: themeState.getDarkTheme ? Theme.of(context).primaryColorLight : Theme.of(context).primaryColorDark, 
       ),
-      body: Center(
-        child: SwitchListTile(
-          activeColor: themeState.getDarkTheme ? Colors.white : Colors.black12 ,
-          title: const Text('Change Theme'),
-          secondary:  Icon(themeState.getDarkTheme  ?  Icons.dark_mode_outlined : Icons.light_mode_outlined),
-           onChanged: (bool value){
-            setState(() {
-               themeState.setDarkTheme = value;
-            });
-           },
-           value: themeState.getDarkTheme,
-        ),
-        
-      ),
+      body:Container(),
     );
   }
 }
