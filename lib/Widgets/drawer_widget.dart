@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_app/Widgets/vertical_spacing_widget.dart';
 import 'package:grocery_app/provider/dark_theme_provide.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +29,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               children: [
                 Image.asset('images/news.png',color: Colors.white,height: 100.0,width: 100.0,),
                 // const VerticalSpeacing(20.0),
-               const Text(
-                  'News App'
+                Text(
+                  'News App',
+                  style: GoogleFonts.lobster(),
                 ),
               ],
             ),
@@ -37,11 +39,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           const VerticalSpeacing(20.0),
            listTile(title: 'Home', icon: Icons.home_outlined, onTap: (){},),
          listTile(title: 'Bookmarks', onTap: (){}, icon: Icons.receipt_outlined),
+        const Divider(thickness: 3.0),
             SwitchListTile(
             activeColor: themeState.getDarkTheme ? Colors.white : Colors.black12 ,
-            title: const Text('ChangeTheme',style: TextStyle(
-              fontSize: 20.0,
-            ),
+            title: const Text('ChangeTheme',
+            style: TextStyle(fontSize: 20.0),
+            
            ),
             secondary:  Icon(themeState.getDarkTheme  ?  Icons.dark_mode_outlined : Icons.light_mode_outlined),
              onChanged: (bool value){
@@ -51,7 +54,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
              },
              value: themeState.getDarkTheme,
           ),
-      
         ],
         ),
       ),
