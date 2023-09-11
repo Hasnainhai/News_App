@@ -19,14 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
+    int currentPageIndex = 0;
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
         title: Text(
           'News App',
           style: GoogleFonts.lobster(
-              textStyle:
-                  TextStyle(color: color, fontSize: 20.0, letterSpacing: 0.6)),
+            textStyle:
+                TextStyle(color: color, fontSize: 20.0, letterSpacing: 0.6),
+          ),
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: color),
@@ -82,20 +84,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       paginationButton(
                         text: 'Prev',
-                        ontap: () {},
+                        ontap: () {
+                          if (currentPageIndex == 0) {
+                            return;
+                          }
+                          setState(() {
+                            currentPageIndex -= 1;
+                          });
+                        },
                       ),
                       Flexible(
                         flex: 2,
                         child: Container(
-                          height: 50.0, // Set the desired height
+                          height: 50.0,
                           child: ListView.builder(
+                            itemCount: 5,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  color: Theme.of(context).cardColor,
-                                  child: const Center(child: Text('1')),
+                                child: Material(
+                                  color: currentPageIndex == index
+                                      ? Colors.blue
+                                      : Theme.of(context).cardColor,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        currentPageIndex = index;
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                        child: Text('${index + 1}'),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             },
@@ -104,7 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       paginationButton(
                         text: 'Next',
-                        ontap: () {},
+                        ontap: () {
+                          if (currentPageIndex == 4) {
+                            return;
+                          }
+                          setState(() {
+                            currentPageIndex += 1;
+                          });
+                        },
                       ),
                     ],
                   ),
