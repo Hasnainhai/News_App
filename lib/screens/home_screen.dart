@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_app/Widgets/drawer_widget.dart';
-import 'package:grocery_app/Widgets/pagination_button.dart';
 import 'package:grocery_app/Widgets/tabs_widget.dart';
 import 'package:grocery_app/Widgets/vertical_spacing_widget.dart';
-import 'package:grocery_app/consts/newsType.dart';
+import 'package:grocery_app/consts/vars.dart';
 import 'package:grocery_app/services/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +15,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var newsType = NewsType.allNews;
+  String sortby = SortBy.publistAt.name;
+  int currentIndex = 0;
+  int itemCount = 5;
+
+  void _incrementIndex() {
+    setState(() {
+      if (currentIndex < itemCount - 1) {
+        currentIndex++;
+      }
+    });
+  }
+
+  void _decrementIndex() {
+    setState(() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
@@ -83,19 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       paginationButton(
-                        text: 'Prev',
-                        ontap: () {
-                          if (currentPageIndex == 0) {
-                            return;
-                          }
+                        onTap: () {
                           setState(() {
-                            currentPageIndex -= 1;
+                            _decrementIndex();
                           });
                         },
+                        text: 'Prev',
                       ),
                       Flexible(
                         flex: 2,
-                        child: Container(
+                        child: SizedBox(
                           height: 50.0,
                           child: ListView.builder(
                             itemCount: 5,
@@ -108,12 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ? Colors.blue
                                       : Theme.of(context).cardColor,
                                   child: InkWell(
+                                    // Use InkWell for tap gestures
                                     onTap: () {
                                       setState(() {
-                                        currentPageIndex = index;
+                                        currentPageIndex =
+                                            index; // Update currentPageIndex on tap
                                       });
                                     },
-                                    child: Padding(
+                                    child: Container(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Center(
                                         child: Text('${index + 1}'),
@@ -127,20 +145,60 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       paginationButton(
-                        text: 'Next',
-                        ontap: () {
-                          if (currentPageIndex == 4) {
-                            return;
-                          }
+                        onTap: () {
+                          print('$_incrementIndex()');
                           setState(() {
-                            currentPageIndex += 1;
+                            _incrementIndex();
                           });
                         },
+                        text: 'Next',
                       ),
                     ],
                   ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Material(
+                color: Theme.of(context).cardColor,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: DropdownButton(
+                      items: dropDownItems, onChanged: (value) {}),
+                ),
+              ),
+            )
           ],
         ),
+      ),
+    );
+  }
+
+  List<DropdownMenuItem<SortBy>> get dropDownItems {
+    return [
+      DropdownMenuItem(
+        value: SortBy.relevancy,
+        child: Text(SortBy.relevancy.name),
+      ),
+      DropdownMenuItem(
+        value: SortBy.popularity,
+        child: Text(SortBy.popularity.name),
+      ),
+      DropdownMenuItem(
+        value: SortBy.publistAt,
+        child: Text(SortBy.publistAt.name),
+      ),
+    ];
+  }
+
+  Widget paginationButton({
+    required Function onTap,
+    required String text,
+  }) {
+    return ElevatedButton(
+      onPressed: () {
+        onTap();
+      },
+      child: Center(
+        child: Text(text),
       ),
     );
   }

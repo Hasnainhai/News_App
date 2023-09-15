@@ -1,5 +1,0 @@
-
-enum NewsType{
-  allNews,
-  topTrandings,
-}
